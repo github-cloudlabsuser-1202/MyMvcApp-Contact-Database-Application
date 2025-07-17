@@ -63,4 +63,61 @@ public class UserController : Controller
         {
             // Implement the Delete method (POST) here
         }
+        public ActionResult Index()
+        {
+            return View(userlist);
+        }
+        
+        public ActionResult Details(int id)
+        {
+            var user = userlist.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
+            return View(user);
+        }
+        
+        public ActionResult Create()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public ActionResult Create(User user)
+        {
+            userlist.Add(user);
+            return RedirectToAction("Index");
+        }
+        
+        public ActionResult Edit(int id)
+        {
+            var user = userlist.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
+            return View(user);
+        }
+        
+        [HttpPost]
+        public ActionResult Edit(int id, User user)
+        {
+            var existingUser = userlist.FirstOrDefault(u => u.Id == id);
+            if (existingUser == null) return NotFound();
+            existingUser.Name = user.Name;
+            existingUser.Email = user.Email;
+            return RedirectToAction("Index");
+        }
+        
+        public ActionResult Delete(int id)
+        {
+            var user = userlist.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
+            return View(user);
+        }
+        
+        [HttpPost]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            var user = userlist.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
+            userlist.Remove(user);
+            return RedirectToAction("Index");
+        }
 }
+
